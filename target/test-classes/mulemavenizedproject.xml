@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+   
+   
+    <flow name="mavenFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/hello" allowedMethods="GET" doc:name="HTTP"/>
+        <set-payload value="#[&quot;Hello Maven&quot;]" doc:name="Set Payload"/>
+    </flow>
+
+    <flow name="retrieveFlights">
+      <http:listener config-ref="HTTP_Listener_Configuration" path="/GetDetails" doc:name="HTTP" allowedMethods="POST"/>
+        <set-payload value="#[&quot;Hello Sadik&quot;]" doc:name="Set Payload"/>
+      <object-to-string-transformer doc:name="Object to String" />
+     <!--  <jms:outbound-endpoint queue="flights"  doc:name="JMS" /> -->
+   </flow>
+    <!-- <flow name="logFlights">
+        <jms:inbound-endpoint queue="flights"  doc:name="JMS"/>
+        <logger message="#[message.payload]" level="INFO" doc:name="Logger"/>
+    </flow> -->
+
+</mule>
